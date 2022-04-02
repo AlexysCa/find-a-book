@@ -33,7 +33,8 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 }
 
-app.use(routes);
+// don't need routes anymore because we are refactoring to GraphQL
+// app.use(routes);
 
 db.once('open', () => {
   app.listen(PORT, () => console.log(`🌍  API server running on port ${PORT}`));
