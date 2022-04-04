@@ -34,26 +34,28 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        saveBook: async (parent, { book }, context) => {
+        saveBook: async (parent, args, context) => {
             if (context.user) {
                 const updatedUser = await User.findByIdAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: {saveBooks: book} },
+                    { $addToSet: {saveBooks: args.input} },
                     { new: true }
                 )
                 return updatedUser;
             }
                 throw new AuthenticationError('Please log in')
         },
-        removeBook: async (parent, { bookId }, context) => {
+        removeBook: async (parent, args, context) => {
             if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id},
-                    { $pull: { saveBooks: { bookId: bookId }}},
+                    { $pull: { saveBooks: { bookId: args.bookId }}},
                     { new: true }
                 )
                 return updatedUser;
             }
+
+                throw new AuthenticationError('Please log in')
         }
     }
 };
